@@ -16,13 +16,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
+Route::middleware(['auth:api'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
 Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
-Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth:sanctum');
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth:api');
 
 Route::resource('users', App\Http\Controllers\API\UserAPIController::class)
+    ->middleware('auth:api')
+    ->except(['create', 'edit']);
+
+Route::resource('vendors', App\Http\Controllers\API\VendorAPIController::class)
+    ->middleware('auth:api')
     ->except(['create', 'edit']);

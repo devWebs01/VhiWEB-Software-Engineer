@@ -11,7 +11,35 @@ use Illuminate\Support\Facades\Auth;
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Handle an incoming authentication request.
+     * @OA\Post(
+     *     path="/api/login",
+     *     tags={"Auth"},
+     *     summary="Login User",
+     *     description="Login dan dapatkan token Bearer",
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             required={"email","password"},
+     *
+     *             @OA\Property(property="email", type="string", format="email", example="user@example.com"),
+     *             @OA\Property(property="password", type="string", format="password", example="secret123")
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Login berhasil",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="token", type="string", example="1|abc.def.ghi")
+     *         )
+     *     ),
+     *
+     *     @OA\Response(response=401, description="Unauthorized")
+     * )
      */
     public function store(LoginRequest $request): JsonResponse
     {
@@ -36,11 +64,36 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Destroy an authenticated session.
+     * @OA\Post(
+     *     path="/api/logout",
+     *     tags={"Auth"},
+     *     summary="Logout User",
+     *     description="Logout dan revoke token saat ini",
+     *     security={{"sanctum":{}}},
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Logout berhasil",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="message", type="string", example="Logged out")
+     *         )
+     *     )
+     * )
      */
     public function destroy(Request $request): JsonResponse
     {
-        $request->user()?->currentAccessToken()?->delete();
+        $token = $request->user()?->currentAccessToken();
+
+        if ($token && method_exists($token, 'delete')) {
+            $token->delete();
+        } elseif ($token && method_exists($token, 'revoke')) {
+            $token->revoke();
+        } else {
+            // fallback: delete all tokens for the user
+            $request->user()?->tokens()->delete();
+        }
 
         return response()->json(['message' => 'Logout successful']);
     }

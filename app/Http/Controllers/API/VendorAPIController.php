@@ -3,32 +3,33 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\AppBaseController;
-use App\Http\Requests\API\CreateUserAPIRequest;
-use App\Http\Requests\API\UpdateUserAPIRequest;
-use App\Models\User;
-use App\Repositories\UserRepository;
+use App\Http\Requests\API\CreateVendorAPIRequest;
+use App\Http\Requests\API\UpdateVendorAPIRequest;
+use App\Models\Vendor;
+use App\Repositories\VendorRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
- * Class UserController
+ * Class VendorController
  */
-class UserAPIController extends AppBaseController
+class VendorAPIController extends AppBaseController
 {
-    private UserRepository $userRepository;
+    private VendorRepository $vendorRepository;
 
-    public function __construct(UserRepository $userRepo)
+    public function __construct(VendorRepository $vendorRepo)
     {
         $this->middleware('auth:sanctum');
-        $this->userRepository = $userRepo;
+        $this->vendorRepository = $vendorRepo;
+
     }
 
     /**
      * @OA\Get(
-     *      path="/api/users",
-     *      summary="getUserList",
-     *      tags={"User"},
-     *      description="Get all Users",
+     *      path="/api/vendors",
+     *      summary="getVendorList",
+     *      tags={"Vendor"},
+     *      description="Get all Vendors",
      *
      *      @OA\Response(
      *          response=200,
@@ -45,7 +46,7 @@ class UserAPIController extends AppBaseController
      *                  property="data",
      *                  type="array",
      *
-     *                  @OA\Items(ref="#/components/schemas/User")
+     *                  @OA\Items(ref="#/components/schemas/Vendor")
      *              ),
      *
      *              @OA\Property(
@@ -58,26 +59,26 @@ class UserAPIController extends AppBaseController
      */
     public function index(Request $request): JsonResponse
     {
-        $users = $this->userRepository->all(
+        $vendors = $this->vendorRepository->all(
             $request->except(['skip', 'limit']),
             $request->get('skip'),
             $request->get('limit')
         );
 
-        return $this->sendResponse($users->toArray(), 'Users retrieved successfully');
+        return $this->sendResponse($vendors->toArray(), 'Vendors retrieved successfully');
     }
 
     /**
      * @OA\Post(
-     *      path="/api/users",
-     *      summary="createUser",
-     *      tags={"User"},
-     *      description="Create User",
+     *      path="/api/vendors",
+     *      summary="createVendor",
+     *      tags={"Vendor"},
+     *      description="Create Vendor",
      *
      *      @OA\RequestBody(
      *        required=true,
      *
-     *        @OA\JsonContent(ref="#/components/schemas/User")
+     *        @OA\JsonContent(ref="#/components/schemas/Vendor")
      *      ),
      *
      *      @OA\Response(
@@ -93,7 +94,7 @@ class UserAPIController extends AppBaseController
      *              ),
      *              @OA\Property(
      *                  property="data",
-     *                  ref="#/components/schemas/User"
+     *                  ref="#/components/schemas/Vendor"
      *              ),
      *              @OA\Property(
      *                  property="message",
@@ -103,25 +104,25 @@ class UserAPIController extends AppBaseController
      *      )
      * )
      */
-    public function store(CreateUserAPIRequest $request): JsonResponse
+    public function store(CreateVendorAPIRequest $request): JsonResponse
     {
         $input = $request->all();
 
-        $user = $this->userRepository->create($input);
+        $vendor = $this->vendorRepository->create($input);
 
-        return $this->sendResponse($user->toArray(), 'User saved successfully');
+        return $this->sendResponse($vendor->toArray(), 'Vendor saved successfully');
     }
 
     /**
      * @OA\Get(
-     *      path="/api/users/{id}",
-     *      summary="getUserItem",
-     *      tags={"User"},
-     *      description="Get User",
+     *      path="/api/vendors/{id}",
+     *      summary="getVendorItem",
+     *      tags={"Vendor"},
+     *      description="Get Vendor",
      *
      *      @OA\Parameter(
      *          name="id",
-     *          description="id of User",
+     *          description="id of Vendor",
      *
      *           @OA\Schema(
      *             type="integer"
@@ -143,7 +144,7 @@ class UserAPIController extends AppBaseController
      *              ),
      *              @OA\Property(
      *                  property="data",
-     *                  ref="#/components/schemas/User"
+     *                  ref="#/components/schemas/Vendor"
      *              ),
      *              @OA\Property(
      *                  property="message",
@@ -155,26 +156,26 @@ class UserAPIController extends AppBaseController
      */
     public function show($id): JsonResponse
     {
-        /** @var User $user */
-        $user = $this->userRepository->find($id);
+        /** @var Vendor $vendor */
+        $vendor = $this->vendorRepository->find($id);
 
-        if (empty($user)) {
-            return $this->sendError('User not found');
+        if (empty($vendor)) {
+            return $this->sendError('Vendor not found');
         }
 
-        return $this->sendResponse($user->toArray(), 'User retrieved successfully');
+        return $this->sendResponse($vendor->toArray(), 'Vendor retrieved successfully');
     }
 
     /**
      * @OA\Put(
-     *      path="/api/users/{id}",
-     *      summary="updateUser",
-     *      tags={"User"},
-     *      description="Update User",
+     *      path="/api/vendors/{id}",
+     *      summary="updateVendor",
+     *      tags={"Vendor"},
+     *      description="Update Vendor",
      *
      *      @OA\Parameter(
      *          name="id",
-     *          description="id of User",
+     *          description="id of Vendor",
      *
      *           @OA\Schema(
      *             type="integer"
@@ -186,7 +187,7 @@ class UserAPIController extends AppBaseController
      *      @OA\RequestBody(
      *        required=true,
      *
-     *        @OA\JsonContent(ref="#/components/schemas/User")
+     *        @OA\JsonContent(ref="#/components/schemas/Vendor")
      *      ),
      *
      *      @OA\Response(
@@ -202,7 +203,7 @@ class UserAPIController extends AppBaseController
      *              ),
      *              @OA\Property(
      *                  property="data",
-     *                  ref="#/components/schemas/User"
+     *                  ref="#/components/schemas/Vendor"
      *              ),
      *              @OA\Property(
      *                  property="message",
@@ -212,32 +213,32 @@ class UserAPIController extends AppBaseController
      *      )
      * )
      */
-    public function update($id, UpdateUserAPIRequest $request): JsonResponse
+    public function update($id, UpdateVendorAPIRequest $request): JsonResponse
     {
         $input = $request->all();
 
-        /** @var User $user */
-        $user = $this->userRepository->find($id);
+        /** @var Vendor $vendor */
+        $vendor = $this->vendorRepository->find($id);
 
-        if (empty($user)) {
-            return $this->sendError('User not found');
+        if (empty($vendor)) {
+            return $this->sendError('Vendor not found');
         }
 
-        $user = $this->userRepository->update($input, $id);
+        $vendor = $this->vendorRepository->update($input, $id);
 
-        return $this->sendResponse($user->toArray(), 'User updated successfully');
+        return $this->sendResponse($vendor->toArray(), 'Vendor updated successfully');
     }
 
     /**
      * @OA\Delete(
-     *      path="/api/users/{id}",
-     *      summary="deleteUser",
-     *      tags={"User"},
-     *      description="Delete User",
+     *      path="/api/vendors/{id}",
+     *      summary="deleteVendor",
+     *      tags={"Vendor"},
+     *      description="Delete Vendor",
      *
      *      @OA\Parameter(
      *          name="id",
-     *          description="id of User",
+     *          description="id of Vendor",
      *
      *           @OA\Schema(
      *             type="integer"
@@ -271,15 +272,15 @@ class UserAPIController extends AppBaseController
      */
     public function destroy($id): JsonResponse
     {
-        /** @var User $user */
-        $user = $this->userRepository->find($id);
+        /** @var Vendor $vendor */
+        $vendor = $this->vendorRepository->find($id);
 
-        if (empty($user)) {
-            return $this->sendError('User not found');
+        if (empty($vendor)) {
+            return $this->sendError('Vendor not found');
         }
 
-        $user->delete();
+        $vendor->delete();
 
-        return $this->sendSuccess('User deleted successfully');
+        return $this->sendSuccess('Vendor deleted successfully');
     }
 }

@@ -16,6 +16,7 @@ class User extends Authenticatable
      * @OA\Schema(
      *     schema="User",
      *     required={"name", "email"},
+     *
      *     @OA\Property(property="id", type="integer", readOnly=true),
      *     @OA\Property(property="name", type="string", example="Adi Putra"),
      *     @OA\Property(property="email", type="string", example="adi@example.com"),
