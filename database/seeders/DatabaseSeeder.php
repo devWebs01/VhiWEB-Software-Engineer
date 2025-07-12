@@ -12,8 +12,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Vendor::factory(10)->create();
         \App\Models\User::factory(10)->create();
+        \App\Models\Vendor::factory(10)->create();
+        \App\Models\Product::factory(10)->create();
 
         \App\Models\User::factory()->create([
             'name' => 'Test User',
@@ -22,7 +23,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory()->create([
             'name' => 'Test User',
             'email' => 'user@example.com',
-            "password" => "secret123"
+            'password' => 'secret123',
 
         ]);
     }

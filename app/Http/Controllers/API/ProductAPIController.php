@@ -3,32 +3,32 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\AppBaseController;
-use App\Http\Requests\API\CreateUserAPIRequest;
-use App\Http\Requests\API\UpdateUserAPIRequest;
-use App\Models\User;
-use App\Repositories\UserRepository;
+use App\Http\Requests\API\CreateProductAPIRequest;
+use App\Http\Requests\API\UpdateProductAPIRequest;
+use App\Models\Product;
+use App\Repositories\ProductRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
- * Class UserController
+ * Class ProductController
  */
-class UserAPIController extends AppBaseController
+class ProductAPIController extends AppBaseController
 {
-    private UserRepository $userRepository;
+    private ProductRepository $productRepository;
 
-    public function __construct(UserRepository $userRepo)
+    public function __construct(ProductRepository $productRepo)
     {
         $this->middleware('auth:api');
-        $this->userRepository = $userRepo;
+        $this->productRepository = $productRepo;
     }
 
     /**
      * @OA\Get(
-     *      path="/api/users",
-     *      summary="getUserList",
-     *      tags={"User"},
-     *      description="Get all Users",
+     *      path="/api/products",
+     *      summary="getProductList",
+     *      tags={"Product"},
+     *      description="Get all Products",
      *
      *      @OA\Response(
      *          response=200,
@@ -45,7 +45,7 @@ class UserAPIController extends AppBaseController
      *                  property="data",
      *                  type="array",
      *
-     *                  @OA\Items(ref="#/components/schemas/User")
+     *                  @OA\Items(ref="#/components/schemas/Product")
      *              ),
      *
      *              @OA\Property(
@@ -58,26 +58,26 @@ class UserAPIController extends AppBaseController
      */
     public function index(Request $request): JsonResponse
     {
-        $users = $this->userRepository->all(
+        $products = $this->productRepository->all(
             $request->except(['skip', 'limit']),
             $request->get('skip'),
             $request->get('limit')
         );
 
-        return $this->sendResponse($users->toArray(), 'Users retrieved successfully');
+        return $this->sendResponse($products->toArray(), 'Products retrieved successfully');
     }
 
     /**
      * @OA\Post(
-     *      path="/api/users",
-     *      summary="createUser",
-     *      tags={"User"},
-     *      description="Create User",
+     *      path="/api/products",
+     *      summary="createProduct",
+     *      tags={"Product"},
+     *      description="Create Product",
      *
      *      @OA\RequestBody(
      *        required=true,
      *
-     *        @OA\JsonContent(ref="#/components/schemas/User")
+     *        @OA\JsonContent(ref="#/components/schemas/Product")
      *      ),
      *
      *      @OA\Response(
@@ -93,7 +93,7 @@ class UserAPIController extends AppBaseController
      *              ),
      *              @OA\Property(
      *                  property="data",
-     *                  ref="#/components/schemas/User"
+     *                  ref="#/components/schemas/Product"
      *              ),
      *              @OA\Property(
      *                  property="message",
@@ -103,25 +103,25 @@ class UserAPIController extends AppBaseController
      *      )
      * )
      */
-    public function store(CreateUserAPIRequest $request): JsonResponse
+    public function store(CreateProductAPIRequest $request): JsonResponse
     {
         $input = $request->all();
 
-        $user = $this->userRepository->create($input);
+        $product = $this->productRepository->create($input);
 
-        return $this->sendResponse($user->toArray(), 'User saved successfully');
+        return $this->sendResponse($product->toArray(), 'Product saved successfully');
     }
 
     /**
      * @OA\Get(
-     *      path="/api/users/{id}",
-     *      summary="getUserItem",
-     *      tags={"User"},
-     *      description="Get User",
+     *      path="/api/products/{id}",
+     *      summary="getProductItem",
+     *      tags={"Product"},
+     *      description="Get Product",
      *
      *      @OA\Parameter(
      *          name="id",
-     *          description="id of User",
+     *          description="id of Product",
      *
      *           @OA\Schema(
      *             type="integer"
@@ -143,7 +143,7 @@ class UserAPIController extends AppBaseController
      *              ),
      *              @OA\Property(
      *                  property="data",
-     *                  ref="#/components/schemas/User"
+     *                  ref="#/components/schemas/Product"
      *              ),
      *              @OA\Property(
      *                  property="message",
@@ -155,26 +155,26 @@ class UserAPIController extends AppBaseController
      */
     public function show($id): JsonResponse
     {
-        /** @var User $user */
-        $user = $this->userRepository->find($id);
+        /** @var Product $product */
+        $product = $this->productRepository->find($id);
 
-        if (empty($user)) {
-            return $this->sendError('User not found');
+        if (empty($product)) {
+            return $this->sendError('Product not found');
         }
 
-        return $this->sendResponse($user->toArray(), 'User retrieved successfully');
+        return $this->sendResponse($product->toArray(), 'Product retrieved successfully');
     }
 
     /**
      * @OA\Put(
-     *      path="/api/users/{id}",
-     *      summary="updateUser",
-     *      tags={"User"},
-     *      description="Update User",
+     *      path="/api/products/{id}",
+     *      summary="updateProduct",
+     *      tags={"Product"},
+     *      description="Update Product",
      *
      *      @OA\Parameter(
      *          name="id",
-     *          description="id of User",
+     *          description="id of Product",
      *
      *           @OA\Schema(
      *             type="integer"
@@ -186,7 +186,7 @@ class UserAPIController extends AppBaseController
      *      @OA\RequestBody(
      *        required=true,
      *
-     *        @OA\JsonContent(ref="#/components/schemas/User")
+     *        @OA\JsonContent(ref="#/components/schemas/Product")
      *      ),
      *
      *      @OA\Response(
@@ -202,7 +202,7 @@ class UserAPIController extends AppBaseController
      *              ),
      *              @OA\Property(
      *                  property="data",
-     *                  ref="#/components/schemas/User"
+     *                  ref="#/components/schemas/Product"
      *              ),
      *              @OA\Property(
      *                  property="message",
@@ -212,32 +212,32 @@ class UserAPIController extends AppBaseController
      *      )
      * )
      */
-    public function update($id, UpdateUserAPIRequest $request): JsonResponse
+    public function update($id, UpdateProductAPIRequest $request): JsonResponse
     {
         $input = $request->all();
 
-        /** @var User $user */
-        $user = $this->userRepository->find($id);
+        /** @var Product $product */
+        $product = $this->productRepository->find($id);
 
-        if (empty($user)) {
-            return $this->sendError('User not found');
+        if (empty($product)) {
+            return $this->sendError('Product not found');
         }
 
-        $user = $this->userRepository->update($input, $id);
+        $product = $this->productRepository->update($input, $id);
 
-        return $this->sendResponse($user->toArray(), 'User updated successfully');
+        return $this->sendResponse($product->toArray(), 'Product updated successfully');
     }
 
     /**
      * @OA\Delete(
-     *      path="/api/users/{id}",
-     *      summary="deleteUser",
-     *      tags={"User"},
-     *      description="Delete User",
+     *      path="/api/products/{id}",
+     *      summary="deleteProduct",
+     *      tags={"Product"},
+     *      description="Delete Product",
      *
      *      @OA\Parameter(
      *          name="id",
-     *          description="id of User",
+     *          description="id of Product",
      *
      *           @OA\Schema(
      *             type="integer"
@@ -271,15 +271,15 @@ class UserAPIController extends AppBaseController
      */
     public function destroy($id): JsonResponse
     {
-        /** @var User $user */
-        $user = $this->userRepository->find($id);
+        /** @var Product $product */
+        $product = $this->productRepository->find($id);
 
-        if (empty($user)) {
-            return $this->sendError('User not found');
+        if (empty($product)) {
+            return $this->sendError('Product not found');
         }
 
-        $user->delete();
+        $product->delete();
 
-        return $this->sendSuccess('User deleted successfully');
+        return $this->sendSuccess('Product deleted successfully');
     }
 }

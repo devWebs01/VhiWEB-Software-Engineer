@@ -19,7 +19,7 @@ class VendorAPIController extends AppBaseController
 
     public function __construct(VendorRepository $vendorRepo)
     {
-        $this->middleware('auth:sanctum');
+        $this->middleware('auth:api');
         $this->vendorRepository = $vendorRepo;
 
     }

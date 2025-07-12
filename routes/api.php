@@ -31,3 +31,7 @@ Route::resource('users', App\Http\Controllers\API\UserAPIController::class)
 Route::resource('vendors', App\Http\Controllers\API\VendorAPIController::class)
     ->middleware('auth:api')
     ->except(['create', 'edit']);
+
+Route::resource('products', App\Http\Controllers\API\ProductAPIController::class)
+    ->middleware('auth:api')
+    ->except(['create', 'edit']);
