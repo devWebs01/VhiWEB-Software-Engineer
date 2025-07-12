@@ -13,10 +13,18 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
+     * @OA\Schema(
+     *     schema="User",
+     *     required={"name", "email"},
+     *     @OA\Property(property="id", type="integer", readOnly=true),
+     *     @OA\Property(property="name", type="string", example="Adi Putra"),
+     *     @OA\Property(property="email", type="string", example="adi@example.com"),
+     *     @OA\Property(property="created_at", type="string", format="date-time"),
+     *     @OA\Property(property="updated_at", type="string", format="date-time")
+     * )
      */
+    public $table = 'users';
+
     protected $fillable = [
         'name',
         'email',
@@ -39,7 +47,16 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
+        'name' => 'string',
+        'email' => 'string',
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+    ];
+
+    public static array $rules = [
+        'name' => 'required|string|min:3',
+        'email' => 'required|email|unique:users,email',
+        'remember_token' => 'nullable|string',
+        'email_verified_at' => 'nullable|date',
     ];
 }
