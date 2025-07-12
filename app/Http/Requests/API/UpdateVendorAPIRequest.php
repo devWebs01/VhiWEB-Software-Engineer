@@ -25,7 +25,11 @@ class UpdateVendorAPIRequest extends APIRequest
     public function rules()
     {
         $rules = Vendor::$rules;
-        $rules['email'] = $rules['email'].','.$this->route('vendor');
+
+        // Ignore the current vendor's email when checking for uniqueness
+        if ($this->route('vendor')) {
+            $rules['email'] = 'required|email|unique:vendors,email,' . $this->route('vendor');
+        }
 
         return $rules;
     }

@@ -25,9 +25,14 @@ class UpdateUserAPIRequest extends APIRequest
     public function rules()
     {
         $rules = User::$rules;
-        $rules['email'] = $rules['email'].','.$this->route('user');
-        // password hanya divalidasi jika dikirim
-        $rules['password'] = 'nullable|string|min:6';
+        
+        // Make password optional for updates, but validate if provided
+        $rules['password'] = 'nullable|string|min:8|confirmed';
+
+        // Ignore the current user's email when checking for uniqueness
+        if ($this->route('user')) {
+            $rules['email'] = 'required|email|unique:users,email,' . $this->route('user');
+        }
 
         return $rules;
     }

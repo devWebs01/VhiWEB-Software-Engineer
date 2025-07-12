@@ -19,7 +19,6 @@ class UserAPIController extends AppBaseController
 
     public function __construct(UserRepository $userRepo)
     {
-        $this->middleware('auth:api');
         $this->userRepository = $userRepo;
     }
 
@@ -271,14 +270,7 @@ class UserAPIController extends AppBaseController
      */
     public function destroy($id): JsonResponse
     {
-        /** @var User $user */
-        $user = $this->userRepository->find($id);
-
-        if (empty($user)) {
-            return $this->sendError('User not found');
-        }
-
-        $user->delete();
+        $this->userRepository->delete($id);
 
         return $this->sendSuccess('User deleted successfully');
     }

@@ -1,67 +1,138 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# VhiWEB-Software-Engineer
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Ini adalah REST API yang dibangun menggunakan Laravel 10 untuk manajemen data Pengguna (User) dan Vendor. Proyek ini dilengkapi dengan otentikasi berbasis token menggunakan Laravel Sanctum dan dokumentasi API interaktif yang dibuat secara otomatis menggunakan L5-Swagger.
 
-## About Laravel
+## Fitur Utama
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+-   **Otentikasi Aman**: Proses registrasi, login, dan logout pengguna yang aman menggunakan Laravel Sanctum.
+-   **Manajemen Pengguna (Users)**: Operasi CRUD (Create, Read, Update, Delete) penuh untuk data pengguna.
+-   **Manajemen Vendor**: Operasi CRUD (Create, Read, Update, Delete) penuh untuk data vendor.
+-   **Validasi Request**: Validasi data yang masuk untuk memastikan integritas dan keamanan data.
+-   **Arsitektur Repository**: Memisahkan logika bisnis dari controller untuk kode yang lebih bersih dan terstruktur.
+-   **Dokumentasi API**: Dokumentasi API yang jelas dan interaktif tersedia melalui Swagger UI.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Persyaratan Sistem
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Untuk menjalankan proyek ini, Anda memerlukan:
 
-## Learning Laravel
+-   PHP >= 8.1
+-   Composer
+-   Database (contoh: MySQL, MariaDB, PostgreSQL)
+-   Web Server (contoh: Nginx, Apache, atau server bawaan Laravel)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Panduan Instalasi dan Setup
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Berikut adalah langkah-langkah untuk menginstal dan menjalankan proyek ini di lingkungan lokal Anda.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1.  **Clone Repository**
+    ```bash
+    git clone https://github.com/your-username/VhiWEB-Software-Engineer.git
+    cd VhiWEB-Software-Engineer
+    ```
 
-## Laravel Sponsors
+2.  **Install Dependensi**
+    Gunakan Composer untuk menginstal semua dependensi PHP yang diperlukan.
+    ```bash
+    composer install
+    ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+3.  **Konfigurasi Lingkungan (.env)**
+    Salin file `.env.example` menjadi `.env`. File ini akan berisi semua konfigurasi spesifik untuk lingkungan Anda.
+    ```bash
+    # Untuk Windows
+    copy .env.example .env
+    # Untuk MacOS/Linux
+    cp .env.example .env
+    ```
 
-### Premium Partners
+4.  **Generate Application Key**
+    Buat kunci enkripsi unik untuk aplikasi Anda.
+    ```bash
+    php artisan key:generate
+    ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+5.  **Konfigurasi Database**
+    Buka file `.env` dan sesuaikan pengaturan koneksi database Anda:
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=nama_database_anda
+    DB_USERNAME=user_database_anda
+    DB_PASSWORD=password_database_anda
+    ```
 
-## Contributing
+6.  **Jalankan Migrasi Database**
+    Buat semua tabel yang diperlukan di database Anda dengan menjalankan migrasi.
+    ```bash
+    php artisan migrate
+    ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+7.  **(Opsional) Jalankan Seeder**
+    Jika Anda ingin mengisi database dengan data awal (dummy data), jalankan seeder.
+    ```bash
+    php artisan db:seed
+    ```
 
-## Code of Conduct
+8.  **Jalankan Server Pengembangan**
+    Sekarang Anda dapat menjalankan server pengembangan lokal Laravel.
+    ```bash
+    php artisan serve
+    ```
+    Aplikasi Anda akan berjalan di `http://127.0.0.1:8000`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Dokumentasi & Pengujian API
 
-## Security Vulnerabilities
+Proyek ini menggunakan L5-Swagger untuk menghasilkan dokumentasi API secara otomatis. Anda dapat mengaksesnya melalui browser untuk melihat semua endpoint yang tersedia dan mengujinya secara langsung.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+-   **URL Dokumentasi API**: [http://127.0.0.1:8000/api/documentation](http://127.0.0.1:8000/api/documentation)
 
-## License
+### Cara Menggunakan API yang Dilindungi
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-"# VhiWEB-Software-Engineer" 
+Untuk mengakses *endpoint* yang memerlukan otentikasi, ikuti langkah-langkah berikut:
+
+1.  Gunakan *endpoint* `/api/login` dengan `email` dan `password` Anda untuk mendapatkan *bearer token*.
+2.  Salin *token* yang Anda terima dari respons login.
+3.  Di halaman dokumentasi Swagger, klik tombol **Authorize**.
+4.  Di jendela yang muncul, ketik `Bearer` diikuti dengan spasi dan *token* Anda (contoh: `Bearer 1|aBcDeFgHiJkLmNoPqRsTuVwXyZ`).
+5.  Klik **Authorize** lagi. Sekarang Anda dapat menguji semua *endpoint* yang dilindungi.
+
+## Daftar Endpoint API
+
+Berikut adalah ringkasan dari semua *endpoint* yang tersedia.
+
+### Otentikasi
+
+| Method | URI               | Aksi                  | Middleware |
+| :----- | :---------------- | :-------------------- | :--------- |
+| `POST` | `/api/register`   | Registrasi pengguna baru | `guest`    |
+| `POST` | `/api/login`      | Login pengguna        | `guest`    |
+| `POST` | `/api/logout`     | Logout pengguna       | `auth:api` |
+| `GET`  | `/api/user`       | Mendapatkan data pengguna | `auth:api` |
+
+### Users
+
+| Method   | URI               | Aksi                      | Middleware |
+| :------- | :---------------- | :------------------------ | :--------- |
+| `GET`    | `/api/users`      | Menampilkan semua pengguna  | `auth:api` |
+| `POST`   | `/api/users`      | Membuat pengguna baru     | `auth:api` |
+| `GET`    | `/api/users/{id}` | Menampilkan detail pengguna | `auth:api` |
+| `PUT`    | `/api/users/{id}` | Memperbarui data pengguna   | `auth:api` |
+| `DELETE` | `/api/users/{id}` | Menghapus pengguna        | `auth:api` |
+
+### Vendors
+
+| Method   | URI                 | Aksi                        | Middleware |
+| :------- | :------------------ | :-------------------------- | :--------- |
+| `GET`    | `/api/vendors`      | Menampilkan semua vendor    | `auth:api` |
+| `POST`   | `/api/vendors`      | Membuat vendor baru       | `auth:api` |
+| `GET`    | `/api/vendors/{id}` | Menampilkan detail vendor   | `auth:api` |
+| `PUT`    | `/api/vendors/{id}` | Memperbarui data vendor     | `auth:api` |
+| `DELETE` | `/api/vendors/{id}` | Menghapus vendor          | `auth:api` |
+
+## Menjalankan Tes
+
+Untuk memastikan semua fungsionalitas berjalan dengan baik, Anda dapat menjalankan rangkaian tes otomatis.
+```bash
+php artisan test
+```

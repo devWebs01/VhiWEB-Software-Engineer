@@ -19,9 +19,7 @@ class VendorAPIController extends AppBaseController
 
     public function __construct(VendorRepository $vendorRepo)
     {
-        $this->middleware('auth:api');
         $this->vendorRepository = $vendorRepo;
-
     }
 
     /**
@@ -272,14 +270,7 @@ class VendorAPIController extends AppBaseController
      */
     public function destroy($id): JsonResponse
     {
-        /** @var Vendor $vendor */
-        $vendor = $this->vendorRepository->find($id);
-
-        if (empty($vendor)) {
-            return $this->sendError('Vendor not found');
-        }
-
-        $vendor->delete();
+        $this->vendorRepository->delete($id);
 
         return $this->sendSuccess('Vendor deleted successfully');
     }

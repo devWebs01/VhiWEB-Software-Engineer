@@ -24,8 +24,6 @@ class CreateUserAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return array_merge(User::$rules, [
-            'password' => 'required|string|min:6',
-        ]);
+        return User::$rules;
     }
 }

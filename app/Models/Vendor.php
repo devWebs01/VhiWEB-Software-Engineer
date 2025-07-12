@@ -111,4 +111,9 @@ use Illuminate\Database\Eloquent\Model;
         'address' => 'required|string',
         'status' => 'required|boolean',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

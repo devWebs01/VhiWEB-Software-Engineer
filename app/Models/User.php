@@ -57,7 +57,11 @@ class User extends Authenticatable
     public static array $rules = [
         'name' => 'required|string|min:3',
         'email' => 'required|email|unique:users,email',
-        'remember_token' => 'nullable|string',
-        'email_verified_at' => 'nullable|date',
+        'password' => 'required|string|min:8|confirmed',
     ];
+
+    public function vendor()
+    {
+        return $this->hasOne(Vendor::class);
+    }
 }
